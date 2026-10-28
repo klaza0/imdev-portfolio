@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { site } from "@/lib/content";
 import { useDict } from "@/lib/lang";
@@ -8,6 +8,8 @@ import { useDict } from "@/lib/lang";
 export default function Contact() {
   const c = useDict().contact;
   const root = useRef<HTMLElement>(null);
+  const [draft, setDraft] = useState<{ mailto: string; gmail: string; outlook: string; text: string } | null>(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const vv = window.visualViewport;
@@ -60,9 +62,24 @@ export default function Contact() {
         onSubmit={(e) => {
           e.preventDefault();
           const data = new FormData(e.currentTarget);
-          const subject = encodeURIComponent(`${c.subject} — ${data.get("name")}`);
-          const body = encodeURIComponent(`${data.get("name")}\n${data.get("email")}\n\n${data.get("message")}`);
-          window.location.href = `mailto:${site.contact.email}?subject=${subject}&body=${body}`;
+          const subject = `${c.subject} — ${data.get("name")}`;
+          const body = `${data.get("name")}\n${data.get("email")}\n\n${data.get("message")}`;
+          const to = site.contact.email;
+          const s = encodeURIComponent(subject);
+          const b = encodeURIComponent(body);
+          const links = {
+            mailto: `mailto:${to}?subject=${s}&body=${b}`,
+            gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${s}&body=${b}`,
+            outlook: `https://outlook.live.com/mail/0/deeplink/compose?to=${to}&subject=${s}&body=${b}`,
+            text: `${to}\n${subject}\n\n${body}`,
+          };
+          setDraft(links);
+          setCopied(false);
+          const a = document.createElement("a");
+          a.href = links.mailto;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
         }}
       >
         <label>
@@ -82,6 +99,25 @@ export default function Contact() {
           <ArrowUpRight size={20} aria-hidden />
         </button>
         <p className="contact-form-note">{c.note}</p>
+        {draft && (
+          <div className="contact-fallback" role="status">
+            <p>{c.fallback}</p>
+            <div className="contact-fallback-links">
+              <a href={draft.gmail} target="_blank" rel="noopener noreferrer">
+                Gmail
+              </a>
+              <a href={draft.outlook} target="_blank" rel="noopener noreferrer">
+                Outlook
+              </a>
+              <button
+                type="button"
+                onClick={() => navigator.clipboard?.writeText(draft.text).then(() => setCopied(true), () => setCopied(false))}
+              >
+                {copied ? c.copied : c.copy}
+              </button>
+            </div>
+          </div>
+        )}
       </form>
     </section>
   );

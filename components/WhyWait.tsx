@@ -143,7 +143,28 @@ export default function WhyWait() {
           0.6,
         );
 
+      // The flight above is measured once; this keeps the phone on its spot when the panel scrolls or reflows.
+      let off = { x: 0, y: 0 };
+      let frame = 0;
+      const follow = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          if (!target.offsetWidth) return;
+          const a = target.getBoundingClientRect();
+          const b = phoneBtn.getBoundingClientRect();
+          off = { x: off.x + a.left - b.left, y: off.y + a.top - b.top };
+          phoneBtn.style.translate = `${off.x}px ${off.y}px`;
+        });
+      };
+      const ro = new ResizeObserver(follow);
+      panel.querySelectorAll(".contact-details, .contact-form").forEach((el) => ro.observe(el));
+      panel.addEventListener("scroll", follow, { passive: true });
+
       return () => {
+        cancelAnimationFrame(frame);
+        ro.disconnect();
+        panel.removeEventListener("scroll", follow);
+        phoneBtn.style.translate = "";
         buzzRef.current = null;
         delete section.dataset.animated;
       };

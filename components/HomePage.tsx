@@ -1,5 +1,6 @@
 "use client";
 
+import { site } from "@/lib/content";
 import { useDict } from "@/lib/lang";
 import BrandStory from "./BrandStory";
 import Header from "./Header";
@@ -23,6 +24,11 @@ export default function HomePage() {
         <BrandStory />
         <WhyWait />
       </main>
+      <footer className="site-footer">
+        <p>
+          © {new Date().getFullYear()} <b lang="en">{site.brand}</b> — {t.footer.owner}. {t.footer.rights}
+        </p>
+      </footer>
     </>
   );
 }

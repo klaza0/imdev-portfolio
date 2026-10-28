@@ -162,6 +162,13 @@ const ar = {
     submit: "يلا نتكلّم",
     note: "هيفتح تطبيق الإيميل برسالتك جاهزة للإرسال.",
     subject: "مشروع جديد",
+    fallback: "تطبيق الإيميل مفتحش؟ ابعتها من هنا:",
+    copy: "انسخ الرسالة",
+    copied: "اتنسخت ✓",
+  },
+  footer: {
+    rights: "كل الحقوق محفوظة.",
+    owner: "إبراهيم منتصر",
   },
 };
 
@@ -289,6 +296,13 @@ const en: Dict = {
     submit: "Let’s talk",
     note: "Opens your email app with your message ready to send.",
     subject: "New project",
+    fallback: "Email app didn’t open? Send it from here:",
+    copy: "Copy message",
+    copied: "Copied ✓",
+  },
+  footer: {
+    rights: "All rights reserved.",
+    owner: "Ibrahim Montaser",
   },
 };
 
