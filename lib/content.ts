@@ -41,7 +41,7 @@ export type IntroToken =
 
 const ar = {
   meta: {
-    title: `${site.brand} — برمجيات وأنظمة رقمية تُبنى حول أعمالك`,
+    title: `${site.brand} — الابتكار يلتقي بالتكنولوجيا`,
     description: "مواقع وتطبيقات وأنظمة رقمية تشتغل معاك وتكبر بيك.",
   },
   skip: "انتقل إلى المحتوى",
@@ -176,7 +176,7 @@ export type Dict = typeof ar;
 
 const en: Dict = {
   meta: {
-    title: `${site.brand} — Software and digital systems built around your business`,
+    title: `${site.brand} — Innovation Meets Technology`,
     description: "Websites, apps and systems that work with you and grow with you.",
   },
   skip: "Skip to content",
